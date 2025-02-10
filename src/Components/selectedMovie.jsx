@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import StarRating from "./StarRating";
 import Loader from "./Loader";
 import IMDb from "../assets/IMDb.png";
+import { useKey } from "../Hooks/useKey";
 
 const MYKEY = "e3d6a10c";
 
@@ -17,24 +18,19 @@ export default function SelectedMovie({
   const countRef = useRef(0);
 
   const isWatched = watched.map((m) => m.imdbID).includes(selectedMovieId);
-  const watchedUserRating = watched.find((m) => m.imdbID === selectedMovieId)?.userRating
+  const watchedUserRating = watched.find(
+    (m) => m.imdbID === selectedMovieId
+  )?.userRating;
 
-  useEffect(function(){
-    if (userRating) countRef.current= countRef.current + 1;
-  },[userRating])
-  
-    useEffect(function () {
-      function callback (e) {
-        if (e.key === "Escape") {
-          onCloseMovie();
-        }
-      }
-      document.addEventListener("keydown", callback);
+  useEffect(
+    function () {
+      if (userRating) countRef.current = countRef.current + 1;
+    },
+    [userRating]
+  );
 
-      return function () { document.removeEventListener("keydown", callback);
-      }
-    }, [onCloseMovie]);
-   
+  useKey("Escape", onCloseMovie);
+
   function handleAdd() {
     const newWatchedMovie = {
       imdbID: selectedMovieId,
@@ -73,15 +69,17 @@ export default function SelectedMovie({
     [selectedMovieId]
   );
 
-  useEffect(function (){
-    if (!movieDetails.Title) return;
-    document.title = `🎞️ Movie: ${movieDetails.Title}`;
-    
-    return function () {
-      document.title = "UsePopcorn";
-    }
-  }
-  ,[movieDetails.Title]);
+  useEffect(
+    function () {
+      if (!movieDetails.Title) return;
+      document.title = `🎞️ Movie: ${movieDetails.Title}`;
+
+      return function () {
+        document.title = "UsePopcorn";
+      };
+    },
+    [movieDetails.Title]
+  );
 
   return (
     <div className="details">
@@ -112,41 +110,46 @@ export default function SelectedMovie({
 
           <section>
             <div className="rating">
-              {!isWatched ? 
-              <>
-              <StarRating
-                onSetRating={setUserRating}
-                maxRating={10}
-                defaultRating={movieDetails.imdbRating}
-                size={42}
-                // message={[
-                //   "Awful",
-                //   "Terrible",
-                //   "Bad",
-                //   "Not Good",
-                //   "Not Bad",
-                //   "Okay",
-                //   "Good",
-                //   "Very Good",
-                //   "Amazing",
-                //   "Perfect",
-                // ]}
-              />
-              {!userRating && (
-                <button className="btn-message">
-                  Please Rate The Movie First To Add It To Your Watched List.
-                </button>
+              {!isWatched ? (
+                <>
+                  <StarRating
+                    onSetRating={setUserRating}
+                    maxRating={10}
+                    defaultRating={movieDetails.imdbRating}
+                    size={42}
+                    // message={[
+                    //   "Awful",
+                    //   "Terrible",
+                    //   "Bad",
+                    //   "Not Good",
+                    //   "Not Bad",
+                    //   "Okay",
+                    //   "Good",
+                    //   "Very Good",
+                    //   "Amazing",
+                    //   "Perfect",
+                    // ]}
+                  />
+                  {!userRating && (
+                    <button className="btn-message">
+                      Please Rate The Movie First To Add It To Your Watched
+                      List.
+                    </button>
+                  )}
+                  {userRating && (
+                    <button className="btn-add" onClick={handleAdd}>
+                      <span>+</span> Add to List
+                    </button>
+                  )}{" "}
+                </>
+              ) : (
+                <>
+                  <button className="btn-message">
+                    You Alredy Rated This Movie {watchedUserRating}
+                    <span>🌟</span>!
+                  </button>
+                </>
               )}
-              {userRating && (
-                <button className="btn-add" onClick={handleAdd}>
-                  <span>+</span> Add to List
-                </button>
-              )}{" "}
-              </> : <>
-              <button className="btn-message">You Alredy Rated This Movie {watchedUserRating}<span>🌟</span>!</button>
-              
-              </>
-              }
             </div>
 
             <p>
