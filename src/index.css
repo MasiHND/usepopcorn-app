@@ -53,7 +53,7 @@ body ::-webkit-scrollbar {
 
 .main {
   margin-top: 2.4rem;
-  height: calc(100vh - 7.2rem - 3 * 2.4rem);
+  height: calc(100vh - 7.8rem - 3 * 2.4rem);
   display: flex;
   gap: 2.4rem;
   justify-content: center;
@@ -347,7 +347,6 @@ body ::-webkit-scrollbar {
   transition: all 0.3s;
 }
 
-
 .seconds {
   background-color: var(--color-background-100);
   width: 8rem;
@@ -387,7 +386,6 @@ body ::-webkit-scrollbar {
   font-size: 1.6rem;
   font-weight: 600;
 }
-
 
 .signature img {
   width: 20rem;

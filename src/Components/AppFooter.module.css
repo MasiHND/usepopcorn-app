@@ -1,0 +1,12 @@
+.footer {
+  margin-top: auto;
+  justify-content: end;
+  position: absolute;
+  bottom: 8px;
+  right: 16px;
+}
+
+.copyright {
+  font-size: 1.2rem;
+  color: var(--color-light--1);
+}
